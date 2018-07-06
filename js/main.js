@@ -38,14 +38,15 @@ $('.reservation-button').on('click', function(event) {
   reservationReference.push(reservationData);
 });
 // Create reservation function
-//function getReservations() {
-  // listen any changes to the database 
+function getReservations() {
+  // listen any changes to the database
   database.ref('reservations').on('value', function(snapshot) {
     // get all reservations in the results from the database
     //var reservationList = $('.reservation-list');
     var allReservations = snapshot.val();
     // remove any reservations the are that displaied current reservations list
-    // iterate through each reservation from database 
+    $('.reservation-list').empty();
+    // iterate through each reservation from database
     for (var reservation in allReservations) {
     // create an object literal with the data we'll pass to Handlebars
       var context = {
@@ -57,32 +58,32 @@ $('.reservation-button').on('click', function(event) {
       var source = $("#reservation-template").html();
       // compile template
       var template = Handlebars.compile(source);
-      // 
+
       var reservationItem = template(context);
       // append the newly created list item to the list
-      $('.reservation-list').empty();
-      
       $('.reservation-list').append(reservationItem);
       //console.log($('.reservation-list'))
       //console.log($('reservationList').empty())
       //console.log($('.cancel'))
       // Click event to delete reservations
       $('.cancel a').on('click', function(event){
-       event.preventDefault();
+        event.preventDefault();
         // find ID for the resevation we want to delete
-       var id = $(event.target).parent().parent().data('id');
+        var id = $(event.target).parent().parent().data('id');
         //console.log($(event.target).parent().parent().data('id'))
             // find resevation data whose objectId is equal to the id we're searching with
-       var reservation = database.ref('reservations/' + id);
+        var reservation = database.ref('reservations/' + id);
         //console.log(reservation)
-       reservation.remove()
+        reservation.remove()
         //console.log(reservation.remove())
       });
     }
-  });     
+  })
+};
+
 //}
 // When page loads, get reservations
-//getReservations();
+getReservations();
 
 });
 
