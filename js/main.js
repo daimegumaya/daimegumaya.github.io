@@ -18,18 +18,13 @@ var database = firebase.database();
 // Create emptiy object ‘reservationData’ where user input will be populated
 var reservationData = {};
 
-// Add click event to reservation day li in the dropdown
-$('.reservation-day li').on('click', function() {
-  // update the value of the property 'day' on the object 'reservationData' to have a value of clicked element's text
-  reservationData.day = $(this).text();
-});
-
 // Add sbmit event to reservation form
 $('.reservation-button').on('click', function(event) {
   // Prevent the default action when form submit
   event.preventDefault();
   // Add user input 'name' with getting value to the 'reservationData' object
   reservationData.name = $('.reservation-name').val();
+  reservationData.day = $('#day-selection').val();
   $('.reservation-name').val('')
   // create section for reservation data in the database
   var reservationReference = database.ref('reservations');
