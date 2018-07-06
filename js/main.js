@@ -45,7 +45,8 @@ $('.reservation-button').on('click', function(event) {
     //var reservationList = $('.reservation-list');
     var allReservations = snapshot.val();
     // remove any reservations the are that displaied current reservations list
-    // iterate through each reservation from database 
+    $('.reservation-list').empty();
+    // iterate through each reservation from database
     for (var reservation in allReservations) {
     // create an object literal with the data we'll pass to Handlebars
       var context = {
@@ -57,11 +58,9 @@ $('.reservation-button').on('click', function(event) {
       var source = $("#reservation-template").html();
       // compile template
       var template = Handlebars.compile(source);
-      // 
+
       var reservationItem = template(context);
       // append the newly created list item to the list
-      $('.reservation-list').empty();
-      
       $('.reservation-list').append(reservationItem);
       //console.log($('.reservation-list'))
       //console.log($('reservationList').empty())
