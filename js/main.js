@@ -38,8 +38,8 @@ $('.reservation-button').on('click', function(event) {
   reservationReference.push(reservationData);
 });
 // Create reservation function
-//function getReservations() {
-  // listen any changes to the database 
+function getReservations() {
+  // listen any changes to the database
   database.ref('reservations').on('value', function(snapshot) {
     // get all reservations in the results from the database
     //var reservationList = $('.reservation-list');
@@ -67,21 +67,23 @@ $('.reservation-button').on('click', function(event) {
       //console.log($('.cancel'))
       // Click event to delete reservations
       $('.cancel a').on('click', function(event){
-       event.preventDefault();
+        event.preventDefault();
         // find ID for the resevation we want to delete
-       var id = $(event.target).parent().parent().data('id');
+        var id = $(event.target).parent().parent().data('id');
         //console.log($(event.target).parent().parent().data('id'))
             // find resevation data whose objectId is equal to the id we're searching with
-       var reservation = database.ref('reservations/' + id);
+        var reservation = database.ref('reservations/' + id);
         //console.log(reservation)
-       reservation.remove()
+        reservation.remove()
         //console.log(reservation.remove())
       });
     }
-  });     
+  })
+};
+
 //}
 // When page loads, get reservations
-//getReservations();
+getReservations();
 
 });
 
