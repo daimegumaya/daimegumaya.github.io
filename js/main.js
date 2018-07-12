@@ -1,4 +1,12 @@
-console.log("js works")
+//console.log("js works")
+
+  if (new Date().getHours() < 21 && new Date().getHours() > 10 ) {
+    $("#navbar .openHours").html("NOW OPEN!");
+  }
+  else {
+    $("#navbar .openHours").html("NOW CLOSED");
+  };
+
 $(function() {
 
   // Initialize Firebase
@@ -16,21 +24,31 @@ $(function() {
 var database = firebase.database();
 
 // Create emptiy object ‘reservationData’ where user input will be populated
-var reservationData = {};
+var reservationData = [];
 
 // Add click event to reservation day li in the dropdown
-$('.reservation-day li').on('click', function() {
+//$('.reservation-day').on('click', function() {
   // update the value of the property 'day' on the object 'reservationData' to have a value of clicked element's text
-  reservationData.day = $(this).text();
-});
+  //reservationData.day = $(this).text();
+//});
 
 // Add sbmit event to reservation form
 $('.reservation-button').on('click', function(event) {
   // Prevent the default action when form submit
   event.preventDefault();
+  $('.message').empty();
   // Add user input 'name' with getting value to the 'reservationData' object
   reservationData.name = $('.reservation-name').val();
+  reservationData.day = $('.reservation-day').val();
+   if (reservationData.day === 'selectAday' || reservationData.name == '') {
+      $('.reservation-form .message').slideDown().html("Please enter your name and select a day");
+      return true;
+    };
+   
   $('.reservation-name').val('')
+  $('.reservation-day').val('selectAday')
+  $('.message').slideUp().empty();  
+    
   // create section for reservation data in the database
   var reservationReference = database.ref('reservations');
   // Post reservation information data to Firebase database
@@ -38,13 +56,14 @@ $('.reservation-button').on('click', function(event) {
   reservationReference.push(reservationData);
 });
 // Create reservation function
-//function getReservations() {
+function getReservations() {
   // listen any changes to the database 
   database.ref('reservations').on('value', function(snapshot) {
     // get all reservations in the results from the database
     //var reservationList = $('.reservation-list');
     var allReservations = snapshot.val();
     // remove any reservations the are that displaied current reservations list
+    $('.reservation-list').empty();
     // iterate through each reservation from database 
     for (var reservation in allReservations) {
     // create an object literal with the data we'll pass to Handlebars
@@ -57,10 +76,9 @@ $('.reservation-button').on('click', function(event) {
       var source = $("#reservation-template").html();
       // compile template
       var template = Handlebars.compile(source);
-      // 
+       
       var reservationItem = template(context);
       // append the newly created list item to the list
-      $('.reservation-list').empty();
       
       $('.reservation-list').append(reservationItem);
       //console.log($('.reservation-list'))
@@ -79,12 +97,14 @@ $('.reservation-button').on('click', function(event) {
         //console.log(reservation.remove())
       });
     }
-  });     
-//}
+  })
+};
 // When page loads, get reservations
-//getReservations();
+getReservations();
 
 });
+
+
 
 // initialize map
 function initMap() {

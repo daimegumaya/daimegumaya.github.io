@@ -28,6 +28,20 @@
 	transform: translateY(-50%);
 }
 
+p.message {
+	text-align: center;
+	margin: auto;
+	width: 30%;
+	color: red;
+	padding: 5px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    opacity: 0.8;
+    display: none;
+
+	
+
+}
 .restaurant-locator {
 	height: 50vh;
 }
